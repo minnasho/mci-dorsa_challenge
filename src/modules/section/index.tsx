@@ -1,10 +1,10 @@
 'use client'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 const fetchMultimedia = async ({
   pageParam,
@@ -42,13 +42,26 @@ export const Section = () => {
     threshold: 1.0, // Trigger when fully visible
     triggerOnce: false, // Keep triggering as needed
   })
+  const router = useRouter()
+
+  const handleNavigation = (href: string) => {
+    localStorage.setItem('scrollY', window.scrollY.toString())
+    router.push(href)
+  }
 
   // Fetch next page when the last item comes into view
   useEffect(() => {
-    if (hasNextPage && !isFetchingNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage() // Prefetch in the background
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  useEffect(() => {
+    const scrollY = localStorage.getItem('scrollY')
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY, 10))
+    }
+  }, [])
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error loading data.</p>
@@ -63,9 +76,16 @@ export const Section = () => {
               <div key={`${section.id}`} className="mb-8" id={section.id}>
                 <div id="sectionHeader" className="mt-10 flex justify-between">
                   <h3 className="mb-3 text-xl font-bold">{section.title}</h3>
-                  <Link href="/" className="text-xl font-semibold text-cyan-500">
+                  <button
+                    onClick={() =>
+                      handleNavigation(
+                        `/section/${section.related_link?.obj_id}/${section.related_link?.url_alias}`,
+                      )
+                    }
+                    className="cursor-pointer text-xl font-semibold text-cyan-500"
+                  >
                     بیشتر
-                  </Link>
+                  </button>
                 </div>
                 <div className="no-scrollbar overflow-x-auto scroll-smooth whitespace-nowrap">
                   <div className="flex space-x-4">
