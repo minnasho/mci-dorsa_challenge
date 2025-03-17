@@ -40,9 +40,9 @@ export default function SectionPage({ params }) {
     <div className="mx-auto my-20 grid grid-cols-2 gap-2 xl:grid-cols-3 xl:gap-4">
       {data?.pages
         ?.flatMap((page) => page.data.results || [])
-        .map((movie) => (
+        .map((movie, idx) => (
           <div
-            key={movie.id}
+            key={`${movie.id}_${idx}`}
             className="mt-20 flex flex-col items-center gap-2"
           >
             <div className="w-48 flex-shrink-0 md:w-[360] xl:w-96">
@@ -53,7 +53,7 @@ export default function SectionPage({ params }) {
                     : null
                 }
                 alt={movie.media_object.alt_text}
-                className="h-[285] w-full rounded-xl object-cover md:h-[250] md:min-h-max"
+                className="h-[285] w-full rounded-xl object-cover shadow-sm md:h-[250] md:min-h-max"
                 width={192}
                 height={285}
               />
