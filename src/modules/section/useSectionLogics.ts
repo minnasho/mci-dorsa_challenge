@@ -1,22 +1,17 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { TSection } from '../homePageContent/types'
-// import { useQuery } from '@tanstack/react-query'
-
-// const fetchContinueWatching = ()=>{
-
-// }
+import { useQuery } from '@tanstack/react-query'
+import {
+  getContinueWatching,
+  getContinueWatchingVideoCards,
+} from './services/sectionAPICalls'
 
 type TUseSectionLogicsProps = {
   section?: TSection
 }
 export const useSectionLogics = ({ section }: TUseSectionLogicsProps) => {
   const router = useRouter()
-  // const { data: watchSectionData, isLoading: isWatchLoading } = useQuery({
-  //   queryKey: ['continueWatching'],
-  //   queryFn: fetchContinueWatching,
-  //   enabled: watchSectionIndex !== -1, // Fetch only if section exists
-  // })
 
   const handleNavigation = (href: string) => {
     localStorage.setItem('scrollY', window.scrollY.toString())
@@ -25,22 +20,34 @@ export const useSectionLogics = ({ section }: TUseSectionLogicsProps) => {
 
   const shouldShowBanner = (): boolean => {
     return (
-      section.section_type === 'Single' &&
-      section.content_type === 'Banner' &&
-      section.cards.length > 0
+      section?.section_type === 'Single' &&
+      section?.content_type === 'Banner' &&
+      section?.cards.length > 0
     )
   }
 
   const shouldShowListSection = (): boolean => {
-    return section.section_type === 'List' && section.cards.length > 0
+    return section?.section_type === 'List' && section?.cards.length > 0
   }
 
   const isContinueToWatchSection = (): boolean => {
     return (
-      section.section_type === 'List' &&
-      section.content_generator === 'Stream Log'
+      section?.section_type === 'List' &&
+      section?.content_generator === 'Stream Log'
     )
   }
+
+  const { data: watchSectionData, isLoading: isWatchLoading } = useQuery({
+    queryKey: ['continueWatching'],
+    queryFn: getContinueWatching,
+    enabled: isContinueToWatchSection(), // Fetch only if section exists
+  })
+  const {} = useQuery({
+    queryKey: ['continueWatchingVideoCards', watchSectionData],
+    queryFn: () =>
+      getContinueWatchingVideoCards({ payload: watchSectionData.results }),
+    enabled: !!watchSectionData && watchSectionData.results?.length > 0, // Fetch only when watchSectionData is available and not empty
+  })
 
   useEffect(() => {
     const scrollY = localStorage.getItem('scrollY')
@@ -54,5 +61,7 @@ export const useSectionLogics = ({ section }: TUseSectionLogicsProps) => {
     shouldShowBanner,
     shouldShowListSection,
     isContinueToWatchSection,
+    watchSectionData,
+    isWatchLoading,
   }
 }

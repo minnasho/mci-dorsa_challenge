@@ -9,14 +9,14 @@ type TSectionProps = {
   error: unknown
 }
 
-export const Section = ({ data, isLoading, error }: TSectionProps) => {
+export const Section = ({ data, isLoading }: TSectionProps) => {
   // Extract all sections
   const sections = data?.pages?.flatMap(
     (page) => page.data.results?.sections || [],
   )
 
-  if (isLoading) return <p>Loading...</p>
-  if (error) return <p>Error loading data.</p>
+  if (isLoading)
+    return [...Array(6)].map((_, index) => <SectionContent key={index} />)
 
   return (
     <div className="mt-8 mb-4 w-full px-4">

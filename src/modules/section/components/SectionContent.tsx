@@ -6,8 +6,8 @@ import { SkeletonSection } from './SkeletonSection'
 import { SectionHeader } from './SectionHeader'
 
 type TSectionContent = {
-  cards: TCard[]
-  section: TSection
+  cards?: TCard[]
+  section?: TSection
 }
 export function SectionContent({ cards, section }: TSectionContent) {
   const {
@@ -15,7 +15,11 @@ export function SectionContent({ cards, section }: TSectionContent) {
     shouldShowListSection,
     isContinueToWatchSection,
     handleNavigation,
+    isWatchLoading,
   } = useSectionLogics({ section })
+  if (!section) {
+    return <SkeletonSection />
+  }
   return (
     <>
       {shouldShowBanner() ? (
@@ -38,7 +42,7 @@ export function SectionContent({ cards, section }: TSectionContent) {
         </div>
       ) : (
         isContinueToWatchSection() &&
-        (section.cards.length > 0 ? (
+        (!isWatchLoading && section.cards.length > 0 ? (
           <div className="mb-8" id={section.id}>
             <SectionHeader
               title={section.title}
@@ -54,9 +58,9 @@ export function SectionContent({ cards, section }: TSectionContent) {
               </div>
             </div>
           </div>
-        ) : (
+        ) : isWatchLoading ? (
           <SkeletonSection title={section.title} />
-        ))
+        ) : null)
       )}
     </>
   )
