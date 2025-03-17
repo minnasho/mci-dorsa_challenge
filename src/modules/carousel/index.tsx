@@ -24,7 +24,7 @@ export default function Carousel({
   const initialSlide = 3
 
   return (
-    <div className="no-scrollbar relative mx-auto mt-[32px] h-[415px] w-full overflow-hidden transition-all md:mt-[64px] md:h-[660px]">
+    <div className="no-scrollbar relative mt-[32px] h-[415px] w-full overflow-hidden transition-all md:mt-[64px] md:h-[660px]">
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper
