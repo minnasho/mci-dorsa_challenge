@@ -15,6 +15,7 @@ export function SectionContent({ cards, section }: TSectionContent) {
     shouldShowListSection,
     isContinueToWatchSection,
     handleNavigation,
+    isWatchLoading,
   } = useSectionLogics({ section })
   if (!section) {
     return <SkeletonSection />
@@ -41,7 +42,7 @@ export function SectionContent({ cards, section }: TSectionContent) {
         </div>
       ) : (
         isContinueToWatchSection() &&
-        (section.cards.length > 0 ? (
+        (!isWatchLoading && section.cards.length > 0 ? (
           <div className="mb-8" id={section.id}>
             <SectionHeader
               title={section.title}
@@ -57,9 +58,9 @@ export function SectionContent({ cards, section }: TSectionContent) {
               </div>
             </div>
           </div>
-        ) : (
+        ) : isWatchLoading ? (
           <SkeletonSection title={section.title} />
-        ))
+        ) : null)
       )}
     </>
   )
