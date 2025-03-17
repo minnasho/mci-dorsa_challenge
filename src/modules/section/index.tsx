@@ -101,7 +101,7 @@ export const Section = () => {
                               : null
                           }
                           alt={movie.media_object.alt_text}
-                          className="h-[250] w-full rounded-lg object-cover md:h-[320] md:min-h-max"
+                          className="h-[250] w-full rounded-lg object-cover shadow-sm md:h-[320] md:min-h-max"
                           width={170}
                           height={250}
                         />
@@ -115,8 +115,8 @@ export const Section = () => {
               </div>
             ),
         )}
-      <div ref={ref} style={{ height: 10 }} />{' '}
       {/* Invisible observer element */}
+      <div ref={ref} style={{ height: 10 }} />
       {isFetchingNextPage && <p>Loading more...</p>}
     </div>
   )
