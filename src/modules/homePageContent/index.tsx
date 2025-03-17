@@ -11,9 +11,6 @@ export const HomePageContent = () => {
     ?.flatMap((page) => page.data.results?.sections)
     ?.find((section) => section.section_type === 'Slider')
 
-    if (isLoading) return <p>Loading...</p>;
-  //   if (error) return <p>Error: {error.message}</p>;
-
   return (
     <>
       <Carousel slides={sliderSection?.cards} />
