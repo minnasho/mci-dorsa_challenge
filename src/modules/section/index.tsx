@@ -1,8 +1,9 @@
 'use client'
-import Image from 'next/image'
 import { useSectionLogics } from './useSectionLogics'
-import { TCard, TMultimediaResponse, TSection } from '../homePageContent/types'
+import { TMultimediaResponse } from '../homePageContent/types'
 import { InfiniteData } from '@tanstack/react-query'
+import { SectionHeader, SectionContent } from './components'
+import Image from 'next/image'
 
 type TSectionProps = {
   data: InfiniteData<TMultimediaResponse, unknown>
@@ -12,61 +13,52 @@ type TSectionProps = {
 
 export const Section = ({ data, isLoading, error }: TSectionProps) => {
   const { handleNavigation } = useSectionLogics()
-
-  console.log('data pages', data)
+  // Extract all sections
+  const sections = data?.pages?.flatMap(
+    (page) => page.data.results?.sections || [],
+  )
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error loading data.</p>
 
   return (
     <div className="mt-8 mb-4 w-full px-4">
-      {data.pages
-        .flatMap((page) => page.data.results?.sections || [])
-        .map(
-          (section: TSection) =>
-            section.cards.length > 0 &&
-            section.section_type === 'List' && (
-              <div key={`${section.id}`} className="mb-8" id={section.id}>
-                <div id="sectionHeader" className="mt-10 flex justify-between">
-                  <h3 className="mb-3 text-xl font-bold">{section.title}</h3>
-                  {section.has_related_link && (
-                    <button
-                      onClick={() =>
-                        handleNavigation(
-                          `/section/${section.related_link?.obj_id}/${section.related_link?.url_alias}`,
-                        )
-                      }
-                      className="cursor-pointer text-xl font-semibold text-cyan-500"
-                    >
-                      بیشتر
-                    </button>
-                  )}
-                </div>
-                <div className="no-scrollbar overflow-x-auto scroll-smooth whitespace-nowrap">
-                  <div className="flex space-x-4">
-                    {section.cards.map((movie: TCard, index) => (
-                      <div key={index} className="w-44 flex-shrink-0 md:w-48">
-                        <Image
-                          src={
-                            movie.media_object.posters.vertical_poster !== ''
-                              ? movie.media_object.posters.vertical_poster
-                              : null
-                          }
-                          alt={movie.media_object.posters.alt_text}
-                          className="h-[250] w-full rounded-lg object-cover shadow-sm md:h-[320] md:min-h-max"
-                          width={170}
-                          height={250}
-                        />
-                        <p className="md:text-md mt-2 mr-2 text-right text-sm font-bold text-wrap">
-                          {movie.title}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ),
-        )}
+      {sections.map((section, idx) =>
+        section.section_type === 'Single' &&
+        section.content_type === 'Banner' &&
+        section.cards.length > 0 ? (
+          <div
+            key={`${section.id}_${idx}`}
+            className="my-8 h-1/2 w-full overflow-hidden rounded-3xl"
+          >
+            <Image
+              src={
+                section.cards[0]?.media_object.posters.horizontal_poster !== ''
+                  ? section.cards[0]?.media_object.posters.horizontal_poster
+                  : null
+              }
+              width={800}
+              height={400}
+              alt={section.cards[0]?.media_object.posters.alt_text}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+              className="h-auto w-full shadow-md"
+            />
+          </div>
+        ) : (
+          section.section_type === 'List' &&
+          section.cards.length > 0 && (
+            <div key={`${section.id}_${idx}`} className="my-8" id={section.id}>
+              <SectionHeader
+                title={section.title}
+                has_related_link={section.has_related_link}
+                related_link={section.related_link}
+                onSeeMoreClicked={handleNavigation}
+              />
+              <SectionContent cards={section.cards} />
+            </div>
+          )
+        ),
+      )}
     </div>
   )
 }
