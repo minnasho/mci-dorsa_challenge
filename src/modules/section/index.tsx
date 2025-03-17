@@ -72,20 +72,23 @@ export const Section = () => {
         .flatMap((page) => page.data.results?.sections || [])
         .map(
           (section) =>
-            section.cards.length > 0 && (
+            section.cards.length > 0 &&
+            section.section_type === 'List' && (
               <div key={`${section.id}`} className="mb-8" id={section.id}>
                 <div id="sectionHeader" className="mt-10 flex justify-between">
                   <h3 className="mb-3 text-xl font-bold">{section.title}</h3>
-                  <button
-                    onClick={() =>
-                      handleNavigation(
-                        `/section/${section.related_link?.obj_id}/${section.related_link?.url_alias}`,
-                      )
-                    }
-                    className="cursor-pointer text-xl font-semibold text-cyan-500"
-                  >
-                    بیشتر
-                  </button>
+                  {section.has_related_link && (
+                    <button
+                      onClick={() =>
+                        handleNavigation(
+                          `/section/${section.related_link?.obj_id}/${section.related_link?.url_alias}`,
+                        )
+                      }
+                      className="cursor-pointer text-xl font-semibold text-cyan-500"
+                    >
+                      بیشتر
+                    </button>
+                  )}
                 </div>
                 <div className="no-scrollbar overflow-x-auto scroll-smooth whitespace-nowrap">
                   <div className="flex space-x-4">
@@ -102,7 +105,7 @@ export const Section = () => {
                           width={170}
                           height={250}
                         />
-                        <p className="mt-2 text-right text-sm font-bold text-wrap">
+                        <p className="md:text-md mt-2 mr-2 text-right text-sm font-bold text-wrap">
                           {movie.title}
                         </p>
                       </div>
