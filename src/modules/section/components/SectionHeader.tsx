@@ -14,8 +14,8 @@ export function SectionHeader({
   onSeeMoreClicked,
 }: TSectionHeader) {
   return (
-    <div id="sectionHeader" className="mt-10 flex justify-between">
-      <h3 className="mb-3 text-xl font-bold">{title}</h3>
+    <div id="sectionHeader" className="mt-10 mb-3 flex justify-between">
+      <h3 className="text-xl font-bold">{title}</h3>
       {has_related_link && (
         <button
           onClick={() =>

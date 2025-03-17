@@ -29,7 +29,7 @@ export type TSection = {
   title: string
   section_type: string | 'Slider' | 'List' | 'Fast Use' | 'Single'
   content_type: string | null | 'Video' | 'Banner'
-  contents_generator: string | null | 'Log Stream'
+  contents_generator: string | null | 'Stream Log'
   content_generator: string | null
   has_related_link: boolean
   related_link: TRelatedLink | null
