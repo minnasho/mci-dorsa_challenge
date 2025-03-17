@@ -1,12 +1,5 @@
 'use client'
-import spongebob from '@/assets/images/The_SpongeBob_Movie_Sponge_Out_of_Water-01.webp'
-import albert from '@/assets/images/Albert-2015.webp'
-import maheRoshani from '@/assets/images/Campaign_Mahe_Roshani-03.webp'
-import combatWombat from '@/assets/images/Combat_Wombat-ve.webp'
-import latte from '@/assets/images/Latte_and_the_Magic_Waterstone-01.webp'
-import rambel from '@/assets/images/RAMBEL-MOVIE-VE.webp'
-import turningRed from '@/assets/images/Turning_Red-01.webp'
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination } from 'swiper/modules'
@@ -15,25 +8,6 @@ import { Autoplay, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { TCard } from '../homePageContent/types'
-
-type TSlide = {
-  id: number
-  image: string | StaticImageData
-  title: string
-}
-export const slidesContent: TSlide[] = [
-  {
-    id: 1,
-    image: spongebob,
-    title: 'The Spongebob Movie',
-  },
-  { id: 2, image: albert, title: 'Movie 2' },
-  { id: 3, image: maheRoshani, title: 'Movie 3' },
-  { id: 4, image: combatWombat, title: 'Movie 4' },
-  { id: 5, image: latte, title: 'Movie 5' },
-  { id: 6, image: rambel, title: 'Movie 6' },
-  { id: 7, image: turningRed, title: 'Movie 7' },
-]
 
 type TCarouselProps = {
   slides?: TCard[]
@@ -50,7 +24,7 @@ export default function Carousel({
   const initialSlide = 3
 
   return (
-    <div className="no-scrollbar relative mx-auto mt-[64px] w-[450px] overflow-x-auto transition-all md:h-[760px] md:w-full">
+    <div className="no-scrollbar relative mx-auto mt-[32px] h-[415px] w-full overflow-hidden transition-all md:mt-[64px] md:h-[660px]">
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper
@@ -63,8 +37,8 @@ export default function Carousel({
         pagination={{
           clickable: true,
           dynamicBullets: false,
-          renderBullet: (index, className) =>
-            `<span class="${className}"></span>`,
+          // renderBullet: (index, className) =>
+          //   `<span class="${className}"></span>`,
         }}
         autoplay={{
           delay: autoPlayInterval,
@@ -72,7 +46,7 @@ export default function Carousel({
           pauseOnMouseEnter: true,
         }}
         modules={[Autoplay, Pagination]}
-        className="mySwiper h-full w-full"
+        className="mySwiper relative h-full w-full"
       >
         {slides?.map((slide, idx) => (
           <SwiperSlide
@@ -85,7 +59,6 @@ export default function Carousel({
                 alt={slide.title}
                 fill
                 className="object-contain"
-                // sizes="(max-width: 768px) 70vw, 400px"
                 priority={idx === 3} // Prioritize loading the initial slide
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
@@ -106,7 +79,7 @@ export default function Carousel({
         }
 
         .swiper-slide {
-          height: 85% !important;
+          height: 100% !important;
           transition: all 0.3s ease;
           border-radius: 12px;
         }
@@ -116,21 +89,39 @@ export default function Carousel({
         }
 
         .swiper-pagination {
-          position: absolute;
-          bottom: 10px !important;
+          position: absolute !important;
+          width: fit-content !important;
+          background-color: #f5f6f833;
+          padding: 0px 8px;
+          border-radius: 12px;
+          left: 50% !important;
+          transform: translateX(-50%);
+          bottom: 15% !important;
+          @media (min-width: 768px) {
+            bottom: 10% !important;
+            padding: 0px 10px;
+          }
         }
 
         .swiper-pagination-bullet {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           background: rgba(128, 128, 128, 0.5);
           opacity: 1;
+          @media (min-width: 768px) {
+            width: 8px;
+            height: 8px;
+          }
         }
 
         .swiper-pagination-bullet-active {
-          width: 12px;
-          height: 12px;
+          width: 8px;
+          height: 8px;
           background: white;
+          @media (min-width: 768px) {
+            width: 12px;
+            height: 12px;
+          }
         }
       `}</style>
     </div>
