@@ -1,34 +1,26 @@
 'use client'
-// import { useEffect, useRef } from 'react'
 import Carousel from '../carousel'
 import { Section } from '../section'
-// import { usePaginatedItems } from './usePaginatedItems'
+import { useHomePageLogics } from './useHomePageLogics'
 
 export const HomePageContent = () => {
-  //     if (!hasNextPage || isFetchingNextPage) return
+  const { data, ref, isLoading, error, isFetchingNextPage } =
+    useHomePageLogics()
 
-  //     observerRef.current = new IntersectionObserver(
-  //       (entries) => {
-  //         if (entries[0].isIntersecting) {
-  //           fetchNextPage()
-  //         }
-  //       },
-  //       { threshold: 1.0 }, // Trigger when the last item is fully visible
-  //     )
+  const sliderSection = data?.pages
+    ?.flatMap((page) => page.data.results?.sections)
+    ?.find((section) => section.section_type === 'Slider')
 
-  //     if (lastItemRef.current) {
-  //       observerRef.current.observe(lastItemRef.current)
-  //     }
-
-  //     return () => observerRef.current?.disconnect()
-  //   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
-  //   if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <p>Loading...</p>;
   //   if (error) return <p>Error: {error.message}</p>;
+
   return (
     <>
-      <Carousel />
-      <Section />
+      <Carousel slides={sliderSection?.cards} />
+      <Section data={data} isLoading={isLoading} error={error} />
+      {/* Invisible observer element */}
+      <div ref={ref} style={{ height: 10 }} />
+      {isFetchingNextPage && <p>Loading more...</p>}
     </>
   )
 }

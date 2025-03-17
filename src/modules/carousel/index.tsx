@@ -14,6 +14,7 @@ import { Autoplay, Pagination } from 'swiper/modules'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/pagination'
+import { TCard } from '../homePageContent/types'
 
 type TSlide = {
   id: number
@@ -35,12 +36,12 @@ export const slidesContent: TSlide[] = [
 ]
 
 type TCarouselProps = {
-  slides?: TSlide[]
+  slides?: TCard[]
   autoPlayInterval?: number
 }
 
 export default function Carousel({
-  slides = slidesContent,
+  slides,
   autoPlayInterval = 2000,
 }: TCarouselProps) {
   const swiperRef = useRef(null)
@@ -73,19 +74,19 @@ export default function Carousel({
         modules={[Autoplay, Pagination]}
         className="mySwiper h-full w-full"
       >
-        {slides.map((slide) => (
+        {slides?.map((slide, idx) => (
           <SwiperSlide
-            key={slide.id}
+            key={`${slide.id}_${idx}`}
             className="w-[280px] overflow-hidden rounded-lg"
           >
             <div className="relative h-full w-full">
               <Image
-                src={slide.image || '/placeholder.svg'}
+                src={slide.media_object.posters.vertical_poster}
                 alt={slide.title}
                 fill
                 className="object-contain"
                 // sizes="(max-width: 768px) 70vw, 400px"
-                priority={slide.id === 4} // Prioritize loading the initial slide
+                priority={idx === 3} // Prioritize loading the initial slide
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <h3 className="text-lg font-bold text-white">{slide.title}</h3>
