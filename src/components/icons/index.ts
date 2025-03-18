@@ -1,2 +1,5 @@
 export * from './Home'
 export * from './RightArrow'
+export * from './FanClub'
+export * from './MatchCup'
+export * from './Profile'
