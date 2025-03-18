@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination } from 'swiper/modules'
+import { Autoplay, Pagination, FreeMode } from 'swiper/modules'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -24,7 +24,7 @@ export default function Carousel({
   const initialSlide = 3
 
   return (
-    <div className="no-scrollbar relative mt-[32px] h-[415px] w-full overflow-hidden transition-all md:mt-[64px] md:h-[660px]">
+    <div className="no-scrollbar relative mt-[32px] h-[415px] w-dvw overflow-hidden transition-all md:mt-[64px] md:h-[660px]">
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper
@@ -32,8 +32,23 @@ export default function Carousel({
         initialSlide={initialSlide}
         grabCursor={true}
         centeredSlides={true}
-        slidesPerView={2.4} // This shows exactly 70% of adjacent slides
-        spaceBetween={30} // Increased space between slides
+        freeMode={true}
+        slidesPerView={2} // This shows exactly 70% of adjacent slides
+        spaceBetween={12} // Increased space between slides
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 12,
+          },
+          768: {
+            slidesPerView: 2.4,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        }}
         pagination={{
           clickable: true,
           dynamicBullets: false,
@@ -45,25 +60,25 @@ export default function Carousel({
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        modules={[Autoplay, Pagination]}
-        className="mySwiper relative h-full w-full"
+        modules={[Autoplay, Pagination, FreeMode]}
+        className="mySwiper relative h-full w-dvw"
       >
         {slides?.map((slide, idx) => (
           <SwiperSlide
             key={`${slide.id}_${idx}`}
-            className="w-[280px] overflow-hidden rounded-lg"
+            className="w-full overflow-hidden rounded-lg"
           >
             <div className="relative h-full w-full">
               <Image
                 src={slide.media_object.posters.vertical_poster}
                 alt={slide.title}
                 fill
-                className="object-contain"
+                className="h-full w-full object-cover"
                 priority={idx === 3} // Prioritize loading the initial slide
               />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              {/* <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                 <h3 className="text-lg font-bold text-white">{slide.title}</h3>
-              </div>
+              </div> */}
             </div>
           </SwiperSlide>
         ))}
@@ -74,8 +89,7 @@ export default function Carousel({
         .swiper {
           padding-bottom: 40px;
           overflow: visible;
-          /* margin-right: -400px;
-          margin-left: 0; */
+          width: 100vw;
         }
 
         .swiper-slide {
