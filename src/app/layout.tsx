@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Vazirmatn } from 'next/font/google'
 import './globals.css'
-import { Header } from '@/modules/header'
 import { TanstackQueryProvider } from './provider'
 
 const vazirmatn = Vazirmatn({
@@ -24,9 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${vazirmatn.variable} antialiased`}>
         <TanstackQueryProvider>
-          <Header />
           {children}
-          <footer></footer>
         </TanstackQueryProvider>
       </body>
     </html>
