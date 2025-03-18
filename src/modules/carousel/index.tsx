@@ -88,7 +88,7 @@ export default function Carousel({
       <style jsx global>{`
         .swiper {
           padding-bottom: 40px;
-          overflow: visible;
+          overflow: hidden;
           width: 100vw;
         }
 
