@@ -37,11 +37,11 @@ export const getContinueWatching = async () => {
 export const getContinueWatchingVideoCards = async ({
   payload,
 }: {
-  payload: unknown[]
+  payload: TgetContinueWatchingResponse
 }) => {
   const { data } = await axios.post(
     'https://edareh.dorsa.app/api/v2/structures/video/cards',
-    { body: JSON.stringify(payload) },
+    payload,
     {
       headers: {
         Authorization: token,

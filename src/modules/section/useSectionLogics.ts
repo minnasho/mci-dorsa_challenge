@@ -45,7 +45,7 @@ export const useSectionLogics = ({ section }: TUseSectionLogicsProps) => {
   const {} = useQuery({
     queryKey: ['continueWatchingVideoCards', watchSectionData],
     queryFn: () =>
-      getContinueWatchingVideoCards({ payload: watchSectionData.results }),
+      getContinueWatchingVideoCards({ payload: watchSectionData }),
     enabled: !!watchSectionData && watchSectionData.results?.length > 0, // Fetch only when watchSectionData is available and not empty
   })
 
