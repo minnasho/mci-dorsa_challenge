@@ -42,10 +42,10 @@ export const useSectionLogics = ({ section }: TUseSectionLogicsProps) => {
     queryFn: getContinueWatching,
     enabled: isContinueToWatchSection(), // Fetch only if section exists
   })
-  const {} = useQuery({
+  const { data: watchSectionCards, isLoading: isWatchCardsLoading } = useQuery({
     queryKey: ['continueWatchingVideoCards', watchSectionData],
     queryFn: () =>
-      getContinueWatchingVideoCards({ payload: watchSectionData }),
+      getContinueWatchingVideoCards({ payload: watchSectionData.results }),
     enabled: !!watchSectionData && watchSectionData.results?.length > 0, // Fetch only when watchSectionData is available and not empty
   })
 
@@ -61,6 +61,8 @@ export const useSectionLogics = ({ section }: TUseSectionLogicsProps) => {
     shouldShowBanner,
     shouldShowListSection,
     isContinueToWatchSection,
+    watchSectionCards,
+    isWatchCardsLoading,
     watchSectionData,
     isWatchLoading,
   }

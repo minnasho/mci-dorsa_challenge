@@ -1,8 +1,14 @@
 import axios from 'axios'
-import { TCardsOfSpecificSection, TgetContinueWatchingResponse } from '../types'
+import {
+  TCardsOfSpecificSection,
+  TContinueWatchingVideoCardsResponse,
+  TDataItem,
+  TgetContinueWatchingResponse,
+  TResult,
+} from '../types'
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQ4MzgxMjksInRva2VuX3R5cGUiOiJVU0VSX1JFR0lTVEVSRUQiLCJ1c2VyX3Bob25lX251bWJlciI6IjA5MDI1NTQ0MjY3IiwidWlkIjoiOTJTMUp3dlFxaiJ9.duhTM-cL75MWYUvrcqS_QTkLjlV4oL_Jf55sZA6rEdI'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDMyMjcxMTgsInRva2VuX3R5cGUiOiJVU0VSX1JFR0lTVEVSRUQiLCJ1c2VyX3Bob25lX251bWJlciI6IjA5MTIyNzMwNTY1IiwidWlkIjoiNTE0MDA1Y2RmMSJ9.XBAYoFcryK7YlDGEeIdoR-fNYyEV62hNvhEsqnHwq2Y'
 
 export const getSectionContent = async ({
   pageParam,
@@ -37,9 +43,9 @@ export const getContinueWatching = async () => {
 export const getContinueWatchingVideoCards = async ({
   payload,
 }: {
-  payload: TgetContinueWatchingResponse
-}) => {
-  const { data } = await axios.post(
+  payload: TResult[]
+}): Promise<TDataItem[]> => {
+  const { data } = await axios.post<TContinueWatchingVideoCardsResponse>(
     'https://edareh.dorsa.app/api/v2/structures/video/cards',
     payload,
     {
@@ -50,5 +56,5 @@ export const getContinueWatchingVideoCards = async ({
     },
   )
   console.log('ContinueWatchingVideoCards', data)
-  return data
+  return data.data
 }

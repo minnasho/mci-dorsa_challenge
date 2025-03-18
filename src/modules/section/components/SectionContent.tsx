@@ -4,6 +4,7 @@ import { useSectionLogics } from '../useSectionLogics'
 import { Banner } from './Banner'
 import { SkeletonSection } from './SkeletonSection'
 import { SectionHeader } from './SectionHeader'
+import { TDataItem } from '../types'
 
 type TSectionContent = {
   cards?: TCard[]
@@ -16,6 +17,8 @@ export function SectionContent({ cards, section }: TSectionContent) {
     isContinueToWatchSection,
     handleNavigation,
     isWatchLoading,
+    isWatchCardsLoading,
+    watchSectionCards,
   } = useSectionLogics({ section })
   if (!section) {
     return <SkeletonSection />
@@ -42,23 +45,25 @@ export function SectionContent({ cards, section }: TSectionContent) {
         </div>
       ) : (
         isContinueToWatchSection() &&
-        (!isWatchLoading && section.cards.length > 0 ? (
+        (!isWatchLoading &&
+        !isWatchCardsLoading &&
+        watchSectionCards.length > 0 ? (
           <div className="mb-8" id={section.id}>
             <SectionHeader
               title={section.title}
-              has_related_link={section.has_related_link}
+              has_related_link={false} //{section.has_related_link}
               related_link={section.related_link}
               onSeeMoreClicked={handleNavigation}
             />
             <div className="no-scrollbar overflow-x-auto scroll-smooth whitespace-nowrap">
               <div className="flex space-x-4">
-                {cards.map((movie: TCard, index) => (
+                {watchSectionCards.map((movie: TDataItem, index) => (
                   <Card key={`${movie.id}_${index}`} movie={movie} />
                 ))}
               </div>
             </div>
           </div>
-        ) : isWatchLoading ? (
+        ) : isWatchLoading || isWatchCardsLoading ? (
           <SkeletonSection title={section.title} />
         ) : null)
       )}

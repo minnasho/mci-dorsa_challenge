@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import { TCard } from '../homePageContent/types'
+import { TDataItem } from '../section/types'
 
 type TCardProps = {
-  movie: TCard
+  movie: TCard | TDataItem
 }
 export const Card: React.FC<TCardProps> = ({ movie }) => {
   return (
