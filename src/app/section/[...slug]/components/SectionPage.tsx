@@ -5,8 +5,14 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-export default function SectionPage({ params }) {
-  const { sectionId, sectionTitle } = params // Access dynamic route params
+type TSectionPageProps = {
+  sectionId: string
+  sectionTitle: string
+}
+export default function SectionPage({
+  sectionId,
+  sectionTitle,
+}: TSectionPageProps) {
   const router = useRouter()
 
   const { data, isLoading } = useInfiniteQuery({

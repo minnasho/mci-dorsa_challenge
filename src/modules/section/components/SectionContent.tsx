@@ -47,7 +47,7 @@ export function SectionContent({ cards, section }: TSectionContent) {
         isContinueToWatchSection() &&
         (!isWatchLoading &&
         !isWatchCardsLoading &&
-        watchSectionCards.length > 0 ? (
+        watchSectionCards?.length > 0 ? (
           <div className="mb-8" id={section.id}>
             <SectionHeader
               title={section.title}
